@@ -28,7 +28,11 @@ class PhotoList extends Component {
       const filteredPhotos = this.state.photos.filter(photo => {
         return (
           photo.tags.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          photo.user.toLowerCase().includes(searchQuery.toLowerCase())
+          photo.user.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          photo.downloads
+            .toString()
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
         );
       });
       return filteredPhotos.map(photo => {

@@ -12,6 +12,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { Favorite, MoreVert, GetApp, LocalOffer } from '@material-ui/icons';
+import PhotoItemMenu from './PhotoItemMenu';
 
 const styles = theme => ({
   root: {
@@ -28,9 +29,24 @@ class PhotoItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      photoData: this.props.photoData
+      photoData: this.props.photoData,
+      anchorEl: null
     };
   }
+
+  openMenu = e => {
+    e.preventDefault();
+    this.setState({
+      anchorEl: e.currentTarget
+    });
+  };
+
+  closeMenu = e => {
+    e.preventDefault();
+    this.setState({
+      anchorEl: null
+    });
+  };
 
   render() {
     const { classes } = this.props;
@@ -41,7 +57,11 @@ class PhotoItem extends Component {
           avatar={<Avatar src={photoData.userImageURL} aria-label='recipe' />}
           action={
             <IconButton aria-label='settings'>
-              <MoreVert />
+              <MoreVert onClick={this.openMenu} />
+              <PhotoItemMenu
+                anchorEl={this.state.anchorEl}
+                closeMenu={this.closeMenu}
+              />
             </IconButton>
           }
           title={photoData.user}
