@@ -12,6 +12,7 @@ function PhotoItemMenu(props) {
     e.preventDefault();
     setViewDetailsStatus(viewDetailsStatus => !viewDetailsStatus);
     console.log('Successfully viewed!');
+    handleClose(e);
   };
 
   return (

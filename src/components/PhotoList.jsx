@@ -7,25 +7,17 @@ const styles = theme => ({
   photoList: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'baseline',
+    alignItems: 'center',
     flexWrap: 'wrap',
     marginTop: '20vh'
   }
 });
 
 class PhotoList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      photos: this.props.photos
-    };
-  }
-
   handleRender = () => {
-    const { photos } = this.state;
-    const { searchQuery } = this.props;
+    const { photos, searchQuery } = this.props;
     if (searchQuery.length > 0) {
-      const filteredPhotos = this.state.photos.filter(photo => {
+      const filteredPhotos = photos.filter(photo => {
         return (
           photo.tags.toLowerCase().includes(searchQuery.toLowerCase()) ||
           photo.user.toLowerCase().includes(searchQuery.toLowerCase()) ||

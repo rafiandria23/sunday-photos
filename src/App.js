@@ -1,16 +1,42 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Fab, Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Add, Remove } from '@material-ui/icons';
 import Header from './components/Header';
 // import logo from './logo.svg';
 // import './App.css';
 import PhotoList from './components/PhotoList';
+import AddPhotoForm from './components/AddPhotoForm';
+
+const styles = theme => ({
+  customFab: {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed'
+  },
+  addPhotoForm: {
+    margin: 0,
+    padding: 20,
+    top: 'auto',
+    right: 20,
+    bottom: 100,
+    left: 'auto',
+    position: 'fixed'
+  }
+});
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       photos: null,
-      searchQuery: ''
+      searchQuery: '',
+      showAddPhotoForm: false
     };
   }
 
@@ -35,22 +61,24 @@ class App extends Component {
     this.setState({
       searchQuery: e.target.value
     });
-    // if (searchQuery.length > 0) {
-    //   const filteredPhotos = this.state.photos.filter(photo => {
-    //     return photo.tags.toLowerCase().includes(searchQuery.toLowerCase());
-    //   });
-    //   this.setState({
-    //     filteredPhotos
-    //   });
-    // } else {
-    //   this.setState({
-    //     filteredPhotos: []
-    //   });
-    // }
+  };
+
+  handleAddPhotoForm = () => {
+    this.setState({ showAddPhotoForm: !this.state.showAddPhotoForm });
+  };
+
+  addPhoto = addPhotoData => {
+    const { photos } = this.state;
+    addPhotoData.id = photos[photos.length - 1].id + 1;
+    this.setState({
+      photos: [...photos, addPhotoData]
+    });
+    this.handleAddPhotoForm();
   };
 
   render() {
     const { photos, searchQuery } = this.state;
+    const { classes } = this.props;
     return (
       <div id='app'>
         <Header
@@ -58,11 +86,42 @@ class App extends Component {
           handleSearch={this.handleSearch}
         />
         {this.state.photos && (
-          <PhotoList photos={photos} searchQuery={searchQuery} />
+          <>
+            <PhotoList photos={photos} searchQuery={searchQuery} />
+            {!this.state.showAddPhotoForm && (
+              <Fab
+                className={classes.customFab}
+                onClick={this.handleAddPhotoForm}
+                color='primary'
+                aria-label='add'
+              >
+                <Add />
+              </Fab>
+            )}
+            {this.state.showAddPhotoForm && (
+              <Fab
+                className={classes.customFab}
+                onClick={this.handleAddPhotoForm}
+                color='primary'
+                aria-label='add'
+              >
+                <Remove onClick={this.handleAddPhotoForm} />
+              </Fab>
+            )}
+            {this.state.showAddPhotoForm && (
+              <Paper elevation={5} className={classes.addPhotoForm}>
+                <AddPhotoForm addPhoto={this.addPhoto} />
+              </Paper>
+            )}
+          </>
         )}
       </div>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(App);

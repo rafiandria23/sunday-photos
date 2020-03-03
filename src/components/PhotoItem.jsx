@@ -29,7 +29,6 @@ class PhotoItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      photoData: this.props.photoData,
       anchorEl: null
     };
   }
@@ -49,8 +48,7 @@ class PhotoItem extends Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const photoData = this.state.photoData;
+    const { classes, photoData } = this.props;
     return (
       <Card className={classes.root}>
         <CardHeader
