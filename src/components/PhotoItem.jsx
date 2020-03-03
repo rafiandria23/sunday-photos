@@ -11,7 +11,7 @@ import {
   IconButton,
   Typography
 } from '@material-ui/core';
-import { Favorite, MoreVert, GetApp } from '@material-ui/icons';
+import { Favorite, MoreVert, GetApp, LocalOffer } from '@material-ui/icons';
 
 const styles = theme => ({
   root: {
@@ -21,7 +21,7 @@ const styles = theme => ({
   media: {
     height: 0,
     paddingTop: '56.25%' // 16:9
-  },
+  }
 });
 
 class PhotoItem extends Component {
@@ -45,7 +45,7 @@ class PhotoItem extends Component {
             </IconButton>
           }
           title={photoData.user}
-          subheader='September 14, 2016'
+          // subheader='September 14, 2016'
         />
         <CardMedia
           className={classes.media}
@@ -53,11 +53,11 @@ class PhotoItem extends Component {
           title={photoData.user}
         />
         <CardContent>
-          <Typography variant='body2' color='textSecondary' component='p'>
+          {/* <Typography variant='body2' color='textSecondary' component='p'>
             This impressive paella is a perfect party dish and a fun meal to
             cook together with your guests. Add 1 cup of frozen peas along with
             the mussels, if you like.
-          </Typography>
+          </Typography> */}
         </CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label='Favorites'>
@@ -70,6 +70,15 @@ class PhotoItem extends Component {
             <GetApp />
             <Typography variant='body2' color='textSecondary' component='p'>
               {photoData.downloads}
+            </Typography>
+          </IconButton>
+          <IconButton aria-label='Tags'>
+            <LocalOffer />
+            <Typography variant='body2' color='textSecondary' component='p'>
+              {photoData.tags
+                .split(', ')
+                .map(tag => `${tag[0].toUpperCase()}${tag.slice(1)}`)
+                .join(', ')}
             </Typography>
           </IconButton>
         </CardActions>

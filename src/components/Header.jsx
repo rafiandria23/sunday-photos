@@ -66,9 +66,11 @@ const styles = theme => ({
 class Header extends Component {
   render() {
     const { classes } = this.props;
+    const handleSearch = this.props.handleSearch;
+    const searchQuery = this.props.searchQuery;
     return (
       <div className={classes.root}>
-        <AppBar position='static'>
+        <AppBar position='fixed'>
           <Toolbar>
             <IconButton
               edge='start'
@@ -79,19 +81,21 @@ class Header extends Component {
               <Menu />
             </IconButton>
             <Typography className={classes.title} variant='h6' noWrap>
-              Material-UI
+              Sunday Photos
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <Search />
               </div>
               <InputBase
-                placeholder='Search…'
+                placeholder='Search by tags...'
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput
                 }}
-                inputProps={{ 'aria-label': 'search' }}
+                inputProps={ { 'aria-label': 'search' } }
+                value={searchQuery}
+                onChange={handleSearch}
               />
             </div>
           </Toolbar>
