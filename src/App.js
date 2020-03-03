@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Fab, Paper } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Fab, Paper, CircularProgress } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Add, Remove } from '@material-ui/icons';
 import Header from './components/Header';
 // import logo from './logo.svg';
@@ -10,7 +9,7 @@ import Header from './components/Header';
 import PhotoList from './components/PhotoList';
 import AddPhotoForm from './components/AddPhotoForm';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   customFab: {
     margin: 0,
     top: 'auto',
@@ -27,101 +26,92 @@ const styles = theme => ({
     bottom: 100,
     left: 'auto',
     position: 'fixed'
+  },
+  loadingSpinner: {
+    marginTop: '20vh',
+    display: 'flex',
+    justifyContent: 'center'
   }
-});
+}));
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      photos: null,
-      searchQuery: '',
-      showAddPhotoForm: false
-    };
-  }
+export default function App(props) {
+  const [photos, setPhotos] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showAddPhotoForm, setShowAddPhotoForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  componentDidMount() {
+  useEffect(() => {
+    setIsLoading(true);
     axios
       .get(
         'https://pixabay.com/api/?key=15451477-5b6f0ff8bb3e146f960b22a5f&editors_choice=true&order=latest'
       )
       .then(({ data }) => {
-        this.setState({
-          photos: data.hits
-        });
+        setIsLoading(false);
+        setPhotos(data.hits);
         console.log(data.hits);
       })
       .catch(err => {
+        setIsLoading(false);
         console.log(err.response);
       });
-  }
+  }, []);
 
-  handleSearch = e => {
+  const handleSearch = e => {
     e.preventDefault();
-    this.setState({
-      searchQuery: e.target.value
-    });
+    setSearchQuery(e.target.value);
   };
 
-  handleAddPhotoForm = () => {
-    this.setState({ showAddPhotoForm: !this.state.showAddPhotoForm });
+  const handleAddPhotoForm = () => {
+    setShowAddPhotoForm(!showAddPhotoForm);
   };
 
-  addPhoto = addPhotoData => {
-    const { photos } = this.state;
+  const addPhoto = addPhotoData => {
     addPhotoData.id = photos[photos.length - 1].id + 1;
-    this.setState({
-      photos: [...photos, addPhotoData]
-    });
-    this.handleAddPhotoForm();
+    setPhotos([...photos, addPhotoData]);
+    handleAddPhotoForm();
   };
 
-  render() {
-    const { photos, searchQuery } = this.state;
-    const { classes } = this.props;
-    return (
-      <div id='app'>
-        <Header
-          searchQuery={this.state.searchQuery}
-          handleSearch={this.handleSearch}
-        />
-        {this.state.photos && (
-          <>
-            <PhotoList photos={photos} searchQuery={searchQuery} />
-            {!this.state.showAddPhotoForm && (
-              <Fab
-                className={classes.customFab}
-                onClick={this.handleAddPhotoForm}
-                color='primary'
-                aria-label='add'
-              >
-                <Add />
-              </Fab>
-            )}
-            {this.state.showAddPhotoForm && (
-              <Fab
-                className={classes.customFab}
-                onClick={this.handleAddPhotoForm}
-                color='primary'
-                aria-label='add'
-              >
-                <Remove onClick={this.handleAddPhotoForm} />
-              </Fab>
-            )}
-            {this.state.showAddPhotoForm && (
-              <Paper elevation={5} className={classes.addPhotoForm}>
-                <AddPhotoForm addPhoto={this.addPhoto} />
-              </Paper>
-            )}
-          </>
-        )}
-      </div>
-    );
-  }
+  const classes = useStyles();
+
+  return (
+    <div id='app'>
+      <Header searchQuery={searchQuery} handleSearch={handleSearch} />
+      {isLoading && (
+        <div className={classes.loadingSpinner}>
+          <CircularProgress />
+        </div>
+      )}
+      {/*!isLoading &&*/ photos && (
+        <>
+          <PhotoList photos={photos} searchQuery={searchQuery} />
+          {!showAddPhotoForm && (
+            <Fab
+              className={classes.customFab}
+              onClick={handleAddPhotoForm}
+              color='primary'
+              aria-label='add'
+            >
+              <Add />
+            </Fab>
+          )}
+          {showAddPhotoForm && (
+            <Fab
+              className={classes.customFab}
+              onClick={handleAddPhotoForm}
+              color='primary'
+              aria-label='add'
+            >
+              <Remove onClick={handleAddPhotoForm} />
+            </Fab>
+          )}
+          {showAddPhotoForm && (
+            <Paper elevation={5} className={classes.addPhotoForm}>
+              <AddPhotoForm addPhoto={addPhoto} />
+            </Paper>
+          )}
+        </>
+      )}
+    </div>
+  );
 }
-
-App.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(App);
