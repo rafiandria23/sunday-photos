@@ -11,7 +11,12 @@ import {
   IconButton,
   Typography
 } from '@material-ui/core';
-import { Favorite, MoreVert, GetApp, LocalOffer } from '@material-ui/icons';
+import {
+  Favorite as FavoriteIcon,
+  MoreVert as MoreVertIcon,
+  GetApp as GetAppIcon,
+  LocalOffer as LocalOfferIcon
+} from '@material-ui/icons';
 import PhotoItemMenu from './PhotoItemMenu';
 
 const styles = theme => ({
@@ -55,7 +60,7 @@ class PhotoItem extends Component {
           avatar={<Avatar src={photoData.userImageURL} aria-label='recipe' />}
           action={
             <IconButton aria-label='settings'>
-              <MoreVert onClick={this.openMenu} />
+              <MoreVertIcon onClick={this.openMenu} />
               <PhotoItemMenu
                 anchorEl={this.state.anchorEl}
                 closeMenu={this.closeMenu}
@@ -79,19 +84,19 @@ class PhotoItem extends Component {
         </CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label='Favorites'>
-            <Favorite />
+            <FavoriteIcon />
             <Typography variant='body2' color='textSecondary' component='p'>
               {photoData.favorites}
             </Typography>
           </IconButton>
           <IconButton aria-label='Downloads'>
-            <GetApp />
+            <GetAppIcon />
             <Typography variant='body2' color='textSecondary' component='p'>
               {photoData.downloads}
             </Typography>
           </IconButton>
           <IconButton aria-label='Tags'>
-            <LocalOffer />
+            <LocalOfferIcon />
             <Typography variant='body2' color='textSecondary' component='p'>
               {photoData.tags
                 .split(', ')

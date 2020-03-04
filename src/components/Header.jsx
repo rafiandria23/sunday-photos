@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -7,10 +6,11 @@ import {
   Typography,
   InputBase
 } from '@material-ui/core';
-import { withStyles, fade } from '@material-ui/core/styles';
+import { makeStyles, fade } from '@material-ui/core/styles';
 import { Menu, Search } from '@material-ui/icons';
+import LeftDrawer from './LeftDrawer';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
@@ -61,52 +61,54 @@ const styles = theme => ({
       }
     }
   }
-});
+}));
 
-class Header extends Component {
-  render() {
-    const { classes } = this.props;
-    const handleSearch = this.props.handleSearch;
-    const searchQuery = this.props.searchQuery;
-    return (
-      <div className={classes.root}>
-        <AppBar position='fixed'>
-          <Toolbar>
-            <IconButton
-              edge='start'
-              className={classes.menuButton}
-              color='inherit'
-              aria-label='open drawer'
-            >
-              <Menu />
-            </IconButton>
-            <Typography className={classes.title} variant='h6' noWrap>
-              Sunday Photos
-            </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <Search />
-              </div>
-              <InputBase
-                placeholder='Search by tags...'
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}
-                inputProps={ { 'aria-label': 'search' } }
-                value={searchQuery}
-                onChange={handleSearch}
-              />
+export default function Header(props) {
+  const [leftDrawerStatus, setLeftDrawerStatus] = useState(false);
+  const classes = useStyles();
+  const { handleSearch, searchQuery } = props;
+
+  const handleDrawer = () => {
+    setLeftDrawerStatus(!leftDrawerStatus);
+  };
+
+  return (
+    <div className={classes.root}>
+      <AppBar position='fixed'>
+        <Toolbar>
+          <IconButton
+            edge='start'
+            className={classes.menuButton}
+            color='inherit'
+            aria-label='open drawer'
+            onClick={handleDrawer}
+          >
+            <Menu />
+          </IconButton>
+          <Typography className={classes.title} variant='h6' noWrap>
+            Sunday Photos
+          </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <Search />
             </div>
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  }
+            <InputBase
+              placeholder='Search by tags...'
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+          </div>
+        </Toolbar>
+      </AppBar>
+      <LeftDrawer
+        leftDrawerStatus={leftDrawerStatus}
+        handleDrawer={handleDrawer}
+      />
+    </div>
+  );
 }
-
-Header.propsTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(Header);
