@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   AppBar,
   Toolbar,
@@ -9,6 +10,7 @@ import {
 import { makeStyles, fade } from '@material-ui/core/styles';
 import { Menu, Search } from '@material-ui/icons';
 import LeftDrawer from './LeftDrawer';
+import { setSearchQuery } from '../actions/searchActions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,12 +66,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Header(props) {
-  const [leftDrawerStatus, setLeftDrawerStatus] = useState(false);
   const classes = useStyles();
-  const { handleSearch, searchQuery } = props;
+  const dispatch = useDispatch();
+  const [leftDrawerStatus, setLeftDrawerStatus] = useState(false);
+  const searchQuery = useSelector(state => state.searchReducer.searchQuery);
 
   const handleDrawer = () => {
     setLeftDrawerStatus(!leftDrawerStatus);
+  };
+
+  const handleSearch = e => {
+    dispatch(setSearchQuery(e.target.value));
   };
 
   return (

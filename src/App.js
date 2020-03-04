@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Header, PhotoList } from './components';
+import { fetchPhotos } from './actions/photoActions';
+import { setSearchQuery } from './actions/searchActions';
 
 const useStyles = makeStyles(theme => ({
   loadingSpinner: {
@@ -14,41 +16,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function App(props) {
-  const [photos, setPhotos] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.isLoadingReducer.isLoading);
 
   useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(
-        'https://pixabay.com/api/?key=15451477-5b6f0ff8bb3e146f960b22a5f&editors_choice=true&order=latest'
-      )
-      .then(({ data }) => {
-        setIsLoading(false);
-        setPhotos(data.hits);
-        console.log(data.hits);
-      })
-      .catch(err => {
-        setIsLoading(false);
-        console.log(err.response);
-      });
-  }, []);
+    dispatch(fetchPhotos());
+  }, [dispatch]);
 
   const handleSearch = e => {
     e.preventDefault();
-    setSearchQuery(e.target.value);
-  };
-
-  const addPhotoParent = addPhotoData => {
-    setPhotos([...photos, addPhotoData]);
+    dispatch(setSearchQuery(e.target.value));
   };
 
   const classes = useStyles();
 
   return (
     <div id='app'>
-      <Header searchQuery={searchQuery} handleSearch={handleSearch} />
+      <Header handleSearch={handleSearch} />
       <Switch>
         {isLoading && (
           <div className={classes.loadingSpinner}>
@@ -56,13 +40,7 @@ export default function App(props) {
           </div>
         )}
         <Route path='/photos'>
-          {!isLoading && photos && (
-            <PhotoList
-              photos={photos}
-              searchQuery={searchQuery}
-              addPhotoParent={addPhotoParent}
-            />
-          )}
+          <PhotoList />
         </Route>
         <Route exact path='/'>
           <Redirect to='/photos' />

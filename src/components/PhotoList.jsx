@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Fab, Paper } from '@material-ui/core';
 import { Add as AddIcon, Remove as RemoveIcon } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { PhotoItem, AddPhotoForm } from '.';
+import { addPhoto } from '../actions/photoActions';
 
 const styles = theme => ({
   photoList: {
@@ -70,10 +72,10 @@ class PhotoList extends Component {
     });
   };
 
-  addPhotoChild = addPhotoData => {
-    const { photos, addPhotoParent } = this.props;
+  addPhotoToState = addPhotoData => {
+    const { photos, addPhoto } = this.props;
     addPhotoData.id = photos[photos.length - 1].id + 1;
-    addPhotoParent(addPhotoData);
+    addPhoto(addPhotoData);
     this.handleAddPhotoForm();
   };
 
@@ -105,7 +107,7 @@ class PhotoList extends Component {
         )}
         {showAddPhotoForm && (
           <Paper elevation={5} className={classes.addPhotoForm}>
-            <AddPhotoForm addPhoto={this.addPhotoChild} />
+            <AddPhotoForm addPhoto={this.addPhotoToState} />
           </Paper>
         )}
       </>
@@ -117,4 +119,20 @@ PhotoList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(PhotoList);
+const mapStateToProps = state => {
+  return {
+    photos: state.photosReducer.photos,
+    searchQuery: state.searchReducer.searchQuery
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addPhoto: newPhotoData => dispatch(addPhoto(newPhotoData))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(PhotoList));
