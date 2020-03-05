@@ -10,7 +10,6 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Home as HomeIcon,
-  Info as InfoIcon,
   PhotoLibrary as PhotoLibraryIcon,
   Stars as StarsIcon
 } from '@material-ui/icons';
@@ -42,19 +41,6 @@ export default function LeftDrawer(props) {
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary='Home' />
-          </ListItem>
-
-          <ListItem
-            button
-            key='About'
-            component={NavLink}
-            to='/about'
-            activeClassName='Mui-selected'
-          >
-            <ListItemIcon>
-              <InfoIcon />
-            </ListItemIcon>
-            <ListItemText primary='About' />
           </ListItem>
 
           <ListItem

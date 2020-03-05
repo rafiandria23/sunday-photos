@@ -13,7 +13,7 @@ const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexWrap: 'wrap',
-    marginTop: '20vh'
+    margin: '10vh auto'
   },
   customFab: {
     margin: 0,

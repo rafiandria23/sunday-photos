@@ -24,8 +24,8 @@ const useStyles = makeStyles({
     height: 'auto',
     maxWidth: '720px',
     objectFit: 'contain',
-    borderTopLeftRadius: '8px',
-    borderBottomLeftRadius: '8px'
+    borderTopLeftRadius: '5px',
+    borderBottomLeftRadius: '5px'
   }
 });
 
@@ -52,7 +52,7 @@ export default function PhotoItemDetail(props) {
               <IconButton size='medium'>
                 <FavoriteIcon fontSize='medium' />
               </IconButton>
-              <Typography variant='p'>
+              <Typography variant='subtitle1'>
                 {currentPhoto.favorites} Likes
               </Typography>
             </div>
@@ -61,7 +61,7 @@ export default function PhotoItemDetail(props) {
               <IconButton size='medium'>
                 <GetAppIcon fontSize='medium' />
               </IconButton>
-              <Typography variant='p'>
+              <Typography variant='subtitle1'>
                 {currentPhoto.downloads} Downloads
               </Typography>
             </div>
@@ -70,7 +70,7 @@ export default function PhotoItemDetail(props) {
               <IconButton size='medium'>
                 <CommentIcon fontSize='medium' />
               </IconButton>
-              <Typography variant='p'>
+              <Typography variant='subtitle1'>
                 {currentPhoto.comments} Comments
               </Typography>
             </div>

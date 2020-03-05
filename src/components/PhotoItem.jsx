@@ -22,11 +22,17 @@ import PhotoItemMenu from './PhotoItemMenu';
 const styles = theme => ({
   root: {
     maxWidth: 345,
-    margin: '5vh'
+    margin: '3vh'
   },
   media: {
     height: 0,
     paddingTop: '56.25%' // 16:9
+  },
+  trafficDetail: {
+    margin: 'auto 0.3vh',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 });
 
@@ -59,8 +65,8 @@ class PhotoItem extends Component {
         <CardHeader
           avatar={<Avatar src={photoData.userImageURL} aria-label='recipe' />}
           action={
-            <IconButton aria-label='settings'>
-              <MoreVertIcon onClick={this.openMenu} />
+            <IconButton aria-label='settings' onClick={this.openMenu}>
+              <MoreVertIcon />
               <PhotoItemMenu
                 anchorEl={this.state.anchorEl}
                 closeMenu={this.closeMenu}
@@ -84,27 +90,35 @@ class PhotoItem extends Component {
           </Typography> */}
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label='Favorites'>
-            <FavoriteIcon />
+          <div className={classes.trafficDetail}>
+            <IconButton aria-label='Favorites'>
+              <FavoriteIcon />
+            </IconButton>
             <Typography variant='body2' color='textSecondary' component='p'>
               {photoData.favorites}
             </Typography>
-          </IconButton>
-          <IconButton aria-label='Downloads'>
-            <GetAppIcon />
+          </div>
+
+          <div className={classes.trafficDetail}>
+            <IconButton aria-label='Downloads'>
+              <GetAppIcon />
+            </IconButton>
             <Typography variant='body2' color='textSecondary' component='p'>
               {photoData.downloads}
             </Typography>
-          </IconButton>
-          <IconButton aria-label='Tags'>
-            <LocalOfferIcon />
+          </div>
+
+          <div className={classes.trafficDetail}>
+            <IconButton aria-label='Tags'>
+              <LocalOfferIcon />
+            </IconButton>
             <Typography variant='body2' color='textSecondary' component='p'>
               {photoData.tags
                 .split(', ')
                 .map(tag => `${tag[0].toUpperCase()}${tag.slice(1)}`)
                 .join(', ')}
             </Typography>
-          </IconButton>
+          </div>
         </CardActions>
       </Card>
     );
