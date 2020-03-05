@@ -64,6 +64,7 @@ class PhotoItem extends Component {
               <PhotoItemMenu
                 anchorEl={this.state.anchorEl}
                 closeMenu={this.closeMenu}
+                photoId={photoData.id}
               />
             </IconButton>
           }

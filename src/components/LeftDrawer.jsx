@@ -11,7 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Home as HomeIcon,
   Info as InfoIcon,
-  PhotoLibrary as PhotoLibraryIcon
+  PhotoLibrary as PhotoLibraryIcon,
+  Stars as StarsIcon
 } from '@material-ui/icons';
 
 const useStyles = makeStyles({
@@ -67,6 +68,19 @@ export default function LeftDrawer(props) {
               <PhotoLibraryIcon />
             </ListItemIcon>
             <ListItemText primary='Photos' />
+          </ListItem>
+
+          <ListItem
+            button
+            key='My Favorites'
+            component={NavLink}
+            to='/photos/favorites'
+            activeClassName='Mui-selected'
+          >
+            <ListItemIcon>
+              <StarsIcon />
+            </ListItemIcon>
+            <ListItemText primary='My Favorites' />
           </ListItem>
         </List>
       </div>

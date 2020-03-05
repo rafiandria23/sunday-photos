@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Header, PhotoList } from './components';
 import { fetchPhotos } from './actions/photoActions';
 import { setSearchQuery } from './actions/searchActions';
+import { PhotoDetailPage, FavoritePhotosPage } from './views';
 
 const useStyles = makeStyles(theme => ({
   loadingSpinner: {
@@ -39,6 +40,12 @@ export default function App(props) {
             <CircularProgress />
           </div>
         )}
+        <Route path='/photos/favorites'>
+          <FavoritePhotosPage />
+        </Route>
+        <Route path='/photos/:photoID'>
+          <PhotoDetailPage />
+        </Route>
         <Route path='/photos'>
           <PhotoList />
         </Route>
