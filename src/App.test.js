@@ -72,7 +72,7 @@ fetchPhotos.mockImplementation(() => {
   };
 });
 
-const mockAddPhotoFavorites = addPhotoFavorites.mockImplementation(photoId => {
+addPhotoFavorites.mockImplementation(photoId => {
   return {
     type: "ADD_PHOTO_FAVORITES",
     payload: {
@@ -81,7 +81,7 @@ const mockAddPhotoFavorites = addPhotoFavorites.mockImplementation(photoId => {
   };
 });
 
-const mockRemovePhotoFavorites = removePhotoFavorites.mockImplementation(
+removePhotoFavorites.mockImplementation(
   photoId => {
     return {
       type: "REMOVE_PHOTO_FAVORITES",
