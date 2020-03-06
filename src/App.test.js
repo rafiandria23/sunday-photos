@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from "react-redux";
 import { render, fireEvent } from "@testing-library/react";
 import axios from "axios";
@@ -18,7 +19,7 @@ import {
 jest.mock(`./actions/photoActions`);
 // jest.mock(`axios`);
 
-const data = {
+const response = {
   data: {
     hits: [
       {
@@ -57,13 +58,20 @@ const data = {
 fetchPhotos.mockImplementation(() => {
   return {
     type: "FETCH_PHOTOS",
-    payload: { photos: data.data.hits }
+    payload: { photos: response.data.hits }
   };
 });
 
-const { getByTestId } = renderWithRedux(<App />);
+const mockAddPhotoFavorites = addPhotoFavorites.mockImplementation(photoId => {
+  return {
+    type: "ADD_PHOTO_FAVORITES",
+    payload: {
+      photoId
+    }
+  };
+});
 
-// axios.get.mockResolvedValue(() => Promise.resolve(data));
+// axios.get.mockResolvedValue(() => Promise.resolve(response));
 
 function renderWithRedux(component) {
   return render(
@@ -74,18 +82,31 @@ function renderWithRedux(component) {
 }
 
 describe("Header Tests", () => {
-  const headerTitle = getByTestId("header-title");
-
   test("Header title element should appear", () => {
+    const { getByTestId } = renderWithRedux(<App />);
+    const headerTitle = getByTestId("header-title");
+
     expect(headerTitle).toBeInTheDocument();
   });
 
   test("Header title element should appear as 'Sunday Photos'", () => {
+    const { getByTestId } = renderWithRedux(<App />);
+    const headerTitle = getByTestId("header-title");
     const headerTitleText = headerTitle.textContent;
     expect(headerTitleText).toMatch(/sunday photos/i);
   });
 });
 
-// describe('Photo Feature Tests', () => {
-
-// });
+describe("Photo Feature Tests", () => {
+  describe("Add to Favorite Feature", () => {
+    test("Should add the photo ID into the Favorite Photos state", () => {
+      const store = createStore(reducer, {photo: {}}, applyMiddleware())
+      const { getByTestId } = renderWithRedux(<PhotoItem photo={{}}/>);
+      const addFavoriteButton = getByTestId('add-favorite-button');
+      fireEvent.click(addFavoriteButton);
+      const favoritePhotos = store.getState().photosReducer.favoritePhotos;
+      console.log(favoritePhotos);
+      // expect(favoritePhotos.length).toBe(1);
+    });
+  });
+});

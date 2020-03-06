@@ -15,26 +15,26 @@ function PhotoItemMenu(props) {
     state => state.photosReducer.favoritePhotos
   );
 
-  const addToFavoritePhotos = e => {
+  const addToFavoritePhotos = () => {
     dispatch(addPhotoFavorites(photoId));
-    closeMenu(e);
+    closeMenu();
   };
 
-  const removeFromFavoritePhotos = e => {
+  const removeFromFavoritePhotos = () => {
     dispatch(removePhotoFavorites(photoId));
-    closeMenu(e);
+    closeMenu();
   };
 
   const decideFavorite = () => {
     if (favoritePhotos.includes(photoId)) {
       return (
-        <MenuItem onClick={removeFromFavoritePhotos} onClose={closeMenu}>
+        <MenuItem data-testid='remove-favorite-button' onClick={removeFromFavoritePhotos} onClose={closeMenu}>
           Remove from Favorites
         </MenuItem>
       );
     } else {
       return (
-        <MenuItem onClick={addToFavoritePhotos} onClose={closeMenu}>
+        <MenuItem data-testid='add-favorite-button' onClick={addToFavoritePhotos} onClose={closeMenu}>
           Add to Favorites
         </MenuItem>
       );

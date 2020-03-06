@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardHeader,
@@ -10,29 +10,29 @@ import {
   Avatar,
   IconButton,
   Typography
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   Favorite as FavoriteIcon,
   MoreVert as MoreVertIcon,
   GetApp as GetAppIcon,
   LocalOffer as LocalOfferIcon
-} from '@material-ui/icons';
-import PhotoItemMenu from './PhotoItemMenu';
+} from "@material-ui/icons";
+import PhotoItemMenu from "./PhotoItemMenu";
 
 const styles = theme => ({
   root: {
     maxWidth: 345,
-    margin: '3vh'
+    margin: "3vh"
   },
   media: {
     height: 0,
-    paddingTop: '56.25%' // 16:9
+    paddingTop: "56.25%" // 16:9
   },
   trafficDetail: {
-    margin: 'auto 0.3vh',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    margin: "auto 0.3vh",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
   }
 });
 
@@ -45,14 +45,12 @@ class PhotoItem extends Component {
   }
 
   openMenu = e => {
-    e.preventDefault();
     this.setState({
       anchorEl: e.currentTarget
     });
   };
 
-  closeMenu = e => {
-    e.preventDefault();
+  closeMenu = () => {
     this.setState({
       anchorEl: null
     });
@@ -63,9 +61,9 @@ class PhotoItem extends Component {
     return (
       <Card className={classes.root}>
         <CardHeader
-          avatar={<Avatar src={photoData.userImageURL} aria-label='recipe' />}
+          avatar={<Avatar src={photoData.userImageURL} aria-label="recipe" />}
           action={
-            <IconButton aria-label='settings' onClick={this.openMenu}>
+            <IconButton aria-label="settings" onClick={this.openMenu}>
               <MoreVertIcon />
               <PhotoItemMenu
                 anchorEl={this.state.anchorEl}
@@ -91,32 +89,32 @@ class PhotoItem extends Component {
         </CardContent>
         <CardActions disableSpacing>
           <div className={classes.trafficDetail}>
-            <IconButton aria-label='Favorites'>
+            <IconButton aria-label="Favorites">
               <FavoriteIcon />
             </IconButton>
-            <Typography variant='body2' color='textSecondary' component='p'>
+            <Typography variant="body2" color="textSecondary" component="p">
               {photoData.favorites}
             </Typography>
           </div>
 
           <div className={classes.trafficDetail}>
-            <IconButton aria-label='Downloads'>
+            <IconButton aria-label="Downloads">
               <GetAppIcon />
             </IconButton>
-            <Typography variant='body2' color='textSecondary' component='p'>
+            <Typography variant="body2" color="textSecondary" component="p">
               {photoData.downloads}
             </Typography>
           </div>
 
           <div className={classes.trafficDetail}>
-            <IconButton aria-label='Tags'>
+            <IconButton aria-label="Tags">
               <LocalOfferIcon />
             </IconButton>
-            <Typography variant='body2' color='textSecondary' component='p'>
+            <Typography variant="body2" color="textSecondary" component="p">
               {photoData.tags
-                .split(', ')
+                .split(", ")
                 .map(tag => `${tag[0].toUpperCase()}${tag.slice(1)}`)
-                .join(', ')}
+                .join(", ")}
             </Typography>
           </div>
         </CardActions>
