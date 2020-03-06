@@ -49,7 +49,7 @@ function PhotoItemMenu(props) {
       open={Boolean(anchorEl)}
       onClose={closeMenu}
     >
-      <MenuItem component={Link} to={`/photos/${photoId}`} onClose={closeMenu}>
+      <MenuItem data-testid='view-detail-button' component={Link} to={`/photos/${photoId}`} onClose={closeMenu}>
         View Details
       </MenuItem>
       {decideFavorite()}

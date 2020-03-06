@@ -1,8 +1,8 @@
 import React from "react";
 import { Router } from "react-router-dom";
-import {createMemoryHistory} from 'history'
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import { createMemoryHistory } from "history";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { render, fireEvent } from "@testing-library/react";
 import axios from "axios";
@@ -10,7 +10,7 @@ import axios from "axios";
 // import { fetchAllPhotos } from "./fetchData";
 import store from "./stores";
 import App from "./App";
-import PhotoItemMenu from './components/PhotoItemMenu';
+import PhotoItemMenu from "./components/PhotoItemMenu";
 
 import {
   fetchPhotos,
@@ -19,14 +19,14 @@ import {
   addPhotoFavorites,
   removePhotoFavorites
 } from "./actions/photoActions";
-import { setSearchQuery } from './actions/searchActions';
+import { setSearchQuery } from "./actions/searchActions";
 
-import isLoadingReducer from './reducers/isLoadingReducer';
-import photosReducer from './reducers/photosReducer';
-import searchReducer from './reducers/searchReducer';
+import isLoadingReducer from "./reducers/isLoadingReducer";
+import photosReducer from "./reducers/photosReducer";
+import searchReducer from "./reducers/searchReducer";
 
 jest.mock(`./actions/photoActions`);
-jest.mock(`./actions/searchActions.js`  );
+jest.mock(`./actions/searchActions.js`);
 // jest.mock(`axios`);
 
 const response = {
@@ -65,7 +65,6 @@ const response = {
   }
 };
 
-
 fetchPhotos.mockImplementation(() => {
   return {
     type: "FETCH_PHOTOS",
@@ -82,14 +81,16 @@ const mockAddPhotoFavorites = addPhotoFavorites.mockImplementation(photoId => {
   };
 });
 
-const mockRemovePhotoFavorites = removePhotoFavorites.mockImplementation(photoId => {
-  return {
-    type: "REMOVE_PHOTO_FAVORITES",
-    payload: {
-      photoId
-    }
-  };
-});
+const mockRemovePhotoFavorites = removePhotoFavorites.mockImplementation(
+  photoId => {
+    return {
+      type: "REMOVE_PHOTO_FAVORITES",
+      payload: {
+        photoId
+      }
+    };
+  }
+);
 
 // axios.get.mockResolvedValue(() => Promise.resolve(response));
 
@@ -123,7 +124,14 @@ describe("Photo Feature Tests", () => {
   describe("Detail Feature", () => {
     test("Should redirect to /photos/:photoId", () => {
       const history = createMemoryHistory();
-      console.log(history);
+      const photoId = 4897656;
+      const { getByTestId } = renderWithRedux(
+        history,
+        <PhotoItemMenu photoId={photoId} />
+      );
+      const viewDetailButton = getByTestId('view-detail-button');
+      fireEvent.click(viewDetailButton);
+      expect(history.location.pathname).toBe(`/photos/${photoId}`);
     });
   });
 
@@ -132,19 +140,25 @@ describe("Photo Feature Tests", () => {
       // const store = createStore(reducer, { photo: {} }, applyMiddleware(thunk));
       const history = createMemoryHistory();
       const photoId = 4897656;
-      const { getByTestId } = renderWithRedux(history, <PhotoItemMenu photoId={photoId}/>);
-      const addFavoriteButton = getByTestId('add-favorite-button');
+      const { getByTestId } = renderWithRedux(
+        history,
+        <PhotoItemMenu photoId={photoId} />
+      );
+      const addFavoriteButton = getByTestId("add-favorite-button");
       fireEvent.click(addFavoriteButton);
       const favoritePhotos = store.getState().photosReducer.favoritePhotos;
       console.log(favoritePhotos);
       expect(favoritePhotos.length).toBe(1);
     });
 
-    test('Should remove the photo ID from the Favorite Photos state', () => {
+    test("Should remove the photo ID from the Favorite Photos state", () => {
       const history = createMemoryHistory();
       const photoId = 4897656;
-      const { getByTestId } = renderWithRedux(history, <PhotoItemMenu photoId={photoId} />);
-      const removeFavoriteButton = getByTestId('remove-favorite-button');
+      const { getByTestId } = renderWithRedux(
+        history,
+        <PhotoItemMenu photoId={photoId} />
+      );
+      const removeFavoriteButton = getByTestId("remove-favorite-button");
       fireEvent.click(removeFavoriteButton);
       const favoritePhotos = store.getState().photosReducer.favoritePhotos;
       console.log(favoritePhotos);
