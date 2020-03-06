@@ -17,12 +17,12 @@ function PhotoItemMenu(props) {
 
   const addToFavoritePhotos = () => {
     dispatch(addPhotoFavorites(photoId));
-    closeMenu();
+    // closeMenu();
   };
 
   const removeFromFavoritePhotos = () => {
     dispatch(removePhotoFavorites(photoId));
-    closeMenu();
+    // closeMenu();
   };
 
   const decideFavorite = () => {
