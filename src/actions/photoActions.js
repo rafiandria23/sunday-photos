@@ -7,8 +7,7 @@ const fetchPhotosCompleted = photos => ({
 
 export const fetchPhotos = () => {
   return dispatch => {
-    axios
-      .get(
+    axios.get(
         'https://pixabay.com/api/?key=15451477-5b6f0ff8bb3e146f960b22a5f&editors_choice=true&order=latest'
       )
       .then(({ data }) => {
