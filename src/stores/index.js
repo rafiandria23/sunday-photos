@@ -1,7 +1,9 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
+
+import { customLogger } from '../middlewares';
 
 import photosReducer from '../reducers/photosReducer';
 import isLoadingReducer from '../reducers/isLoadingReducer';
@@ -15,7 +17,7 @@ const reducers = combineReducers({
 
 const store = createStore(
   reducers,
-  composeWithDevTools(applyMiddleware(thunk, logger))
+  composeWithDevTools(applyMiddleware(thunk, customLogger))
 );
 
 export default store;
