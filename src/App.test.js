@@ -4,11 +4,19 @@ import { Provider } from "react-redux";
 import { render, fireEvent } from "@testing-library/react";
 import axios from "axios";
 
-import { fetchAllPhotos } from "./fetchData";
+// import { fetchAllPhotos } from "./fetchData";
 import store from "./stores";
 import App from "./App";
+import {
+  fetchPhotos,
+  addPhoto,
+  getPhotoDetail,
+  addPhotoFavorites,
+  removePhotoFavorites
+} from "./actions/photoActions";
 
-jest.mock("axios");
+jest.mock(`./actions/photoActions`);
+// jest.mock(`axios`);
 
 const data = {
   data: {
@@ -46,7 +54,16 @@ const data = {
   }
 };
 
-axios.get.mockResolvedValueOnce(() => Promise.resolve(data));
+fetchPhotos.mockImplementation(() => {
+  return {
+    type: "FETCH_PHOTOS",
+    payload: { photos: data.data.hits }
+  };
+});
+
+const { getByTestId } = renderWithRedux(<App />);
+
+// axios.get.mockResolvedValue(() => Promise.resolve(data));
 
 function renderWithRedux(component) {
   return render(
@@ -57,7 +74,6 @@ function renderWithRedux(component) {
 }
 
 describe("Header Tests", () => {
-  const { getByTestId } = renderWithRedux(<App />);
   const headerTitle = getByTestId("header-title");
 
   test("Header title element should appear", () => {
@@ -70,7 +86,6 @@ describe("Header Tests", () => {
   });
 });
 
-// describe("Photos Tests", () => {
-//     // await expect(fetchAllPhotos('react')).resolves.toHaveProperty(data);
-//   });
+// describe('Photo Feature Tests', () => {
+
 // });
