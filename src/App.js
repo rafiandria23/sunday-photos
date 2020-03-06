@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { Header, PhotoList } from './components';
-import { fetchPhotos } from './actions/photoActions';
-import { setSearchQuery } from './actions/searchActions';
-import { PhotoDetailPage, FavoritePhotosPage } from './views';
+import React, { useEffect } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { CircularProgress } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+import { Header, PhotoList } from "./components";
+import { fetchPhotos } from "./actions/photoActions";
+import { setSearchQuery } from "./actions/searchActions";
+import { PhotoDetailPage, FavoritePhotosPage } from "./views";
 
 const useStyles = makeStyles(theme => ({
   loadingSpinner: {
-    marginTop: '20vh',
-    display: 'flex',
-    justifyContent: 'center'
+    marginTop: "20vh",
+    display: "flex",
+    justifyContent: "center"
   }
 }));
 
@@ -32,25 +33,25 @@ export default function App(props) {
   const classes = useStyles();
 
   return (
-    <div id='app'>
-      <Header handleSearch={handleSearch} />
+    <div id="app">
+      <Header data-testid="header" handleSearch={handleSearch} />
       <Switch>
         {isLoading && (
           <div className={classes.loadingSpinner}>
             <CircularProgress />
           </div>
         )}
-        <Route path='/photos/favorites'>
+        <Route path="/photos/favorites">
           <FavoritePhotosPage />
         </Route>
-        <Route path='/photos/:photoID'>
+        <Route path="/photos/:photoID">
           <PhotoDetailPage />
         </Route>
-        <Route path='/photos'>
+        <Route path="/photos">
           <PhotoList />
         </Route>
-        <Route exact path='/'>
-          <Redirect to='/photos' />
+        <Route exact path="/">
+          <Redirect to="/photos" />
         </Route>
       </Switch>
     </div>

@@ -92,7 +92,7 @@ export default function Header(props) {
           >
             <Menu />
           </IconButton>
-          <Typography className={classes.title} variant='h6' noWrap>
+          <Typography data-testid='header-title' className={classes.title} variant='h6' noWrap>
             Sunday Photos
           </Typography>
           <div className={classes.search}>
